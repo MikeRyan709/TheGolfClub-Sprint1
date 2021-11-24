@@ -1,13 +1,10 @@
 package com.sprint.assessingdatarest;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.time.LocalDate;
 
 @Entity
-public class Tournaments {
+public class Tournament {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long tournament_Id;
@@ -16,21 +13,25 @@ public class Tournaments {
     private LocalDate endDate;
     private String location;
     private float entryFee;
-    private float cashPrize;
-    private String participant;
-    private String finalStandings;
+    private float prize;
+    @ManyToOne
+    @JoinColumn(name = "participant_id")
+    private Person participant;
+    @ManyToOne
+    @JoinColumn(name = "final_standings_id")
+    private finalStandings finalStandings;
 
-    public Tournaments(long tournament_Id, LocalDate startDate, LocalDate endDate, String location, float entryFee, float cashPrize, String participant, String finalStandings) {
-        super();
+    public Tournament(long tournament_Id, LocalDate startDate, LocalDate endDate, String location, float entryFee, float prize, Person participant, com.sprint.assessingdatarest.finalStandings finalStandings) {
         this.tournament_Id = tournament_Id;
         this.startDate = startDate;
         this.endDate = endDate;
         this.location = location;
         this.entryFee = entryFee;
-        this.cashPrize = cashPrize;
+        this.prize = prize;
         this.participant = participant;
         this.finalStandings = finalStandings;
     }
+    //Getters and Setters //
 
     public long getTournament_Id() {
         return tournament_Id;
@@ -72,27 +73,27 @@ public class Tournaments {
         this.entryFee = entryFee;
     }
 
-    public float getCashPrize() {
-        return cashPrize;
+    public float getPrize() {
+        return prize;
     }
 
-    public void setCashPrize(float cashPrize) {
-        this.cashPrize = cashPrize;
+    public void setPrize(float prize) {
+        this.prize = prize;
     }
 
-    public String getParticipant() {
+    public Person getParticipant() {
         return participant;
     }
 
-    public void setParticipant(String participant) {
+    public void setParticipant(Person participant) {
         this.participant = participant;
     }
 
-    public String getFinalStandings() {
+    public com.sprint.assessingdatarest.finalStandings getFinalStandings() {
         return finalStandings;
     }
 
-    public void setFinalStandings(String finalStandings) {
+    public void setFinalStandings(com.sprint.assessingdatarest.finalStandings finalStandings) {
         this.finalStandings = finalStandings;
     }
 }

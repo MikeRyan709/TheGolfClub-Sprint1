@@ -9,7 +9,6 @@ import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 
 @RepositoryRestResource(collectionResourceRel = "Members", path = "Members")
 public interface MemberRepository extends PagingAndSortingRepository<Members, Long> {
-    default List<Members> findByLastName(@Param("name") String name) {
-        return null;
-    }
+    List<Members> findById(@Param("name") int id);
+
 }
