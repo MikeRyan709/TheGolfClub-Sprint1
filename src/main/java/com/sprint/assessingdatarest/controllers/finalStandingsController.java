@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @CrossOrigin(origins = "http://localhost:8080")
 @RestController
@@ -46,4 +47,30 @@ public class finalStandingsController {
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
+    @PutMapping("/finalStandings/{id}")
+    public ResponseEntity<finalStandings> putFinalStandings(@PathVariable("Id") long id, @RequestBody finalStandings finalStandings){
+        Optional<finalStandings> finalStandingsUpdate = finalStandingsRepository.findById(id);
+        if (finalStandingsUpdate.isPresent()) {
+            finalStandings _finalStandings = finalStandingsUpdate.get();
+            _finalStandings.setPerson(finalStandings.getPerson());
+            _finalStandings.setTournament(finalStandings.getTournament());
+            _finalStandings.setFinalScore(finalStandings.getFinalScore());
+
+            return new ResponseEntity<>(finalStandingsRepository.save(_finalStandings), HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>((HttpStatus.NOT_FOUND));
+        }
+    }
+
+    @DeleteMapping("/finalStandings/{id}")
+    public ResponseEntity<HttpStatus> deleteFinalStandings (@PathVariable("id") long id) {
+        try {
+            finalStandingsRepository.deleteById(id);
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
 }

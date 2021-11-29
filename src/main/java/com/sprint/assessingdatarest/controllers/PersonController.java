@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @CrossOrigin(origins = "http://localhost:8080")
 @RestController
@@ -20,26 +21,26 @@ public class PersonController {
     @GetMapping("/person")
     public ResponseEntity<List<Person>> getPerson(@RequestParam(required = false) String firstName, String lastName) {
         try {
-            List<Person> people = new ArrayList<>();
+            List<Person> person = new ArrayList<>();
 
             if (lastName == null && firstName == null)
-                personRepository.findAll().forEach(people::add);
+                personRepository.findAll().forEach(person::add);
             else if (lastName == null)
-                people.addAll(personRepository.findByFirstName(firstName));
+                person.addAll(personRepository.findByFirstName(firstName));
             else
-                people.addAll(personRepository.findByLastName(lastName));
+                person.addAll(personRepository.findByLastName(lastName));
 
-            if (people.isEmpty()) {
+            if (person.isEmpty()) {
                 return new ResponseEntity<>(HttpStatus.NO_CONTENT);
             }
 
-            return new ResponseEntity<>(people, HttpStatus.OK);
+            return new ResponseEntity<>(person, HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
-    @PostMapping("/people")
+    @PostMapping("/person")
     public ResponseEntity<Person> postPerson(@RequestBody Person person) {
         try {
             Person _person = personRepository
@@ -47,6 +48,23 @@ public class PersonController {
             return new ResponseEntity<>(_person, HttpStatus.CREATED);
         }catch (Exception e) {
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @PutMapping("/person/{id}")
+    public ResponseEntity<Person> putPerson(@PathVariable("Id") long id, @RequestBody Person person) {
+        Optional<Person> personUpdate = personRepository.findById(id);
+
+        if (personUpdate.isPresent()){
+            Person _person = personUpdate.get();
+            _person.setFirstName(person.getFirstName());
+            _person.setLastName(person.getLastName());
+            _person.setEmail(person.getEmail());
+            _person.setPhone(person.getPhone());
+
+            return  new ResponseEntity<>(personRepository.save(_person), HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
 }

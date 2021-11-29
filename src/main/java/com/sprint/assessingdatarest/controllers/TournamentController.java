@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @CrossOrigin(origins ="http://localhost:8080")
 @RestController
@@ -43,6 +44,37 @@ public class TournamentController {
             return new ResponseEntity<>(_tournament, HttpStatus.CREATED);
         } catch (Exception e) {
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @PutMapping("/Tournament/{id}")
+    public ResponseEntity<Tournament> putFinalStandings(@PathVariable("Id") long id, @RequestBody Tournament tournament) {
+        Optional<Tournament> tournamentUpdate = tournamentsRepository.findById(id);
+
+        if (tournamentUpdate.isPresent()){
+            Tournament _tournament = tournamentUpdate.get();
+            _tournament.setTournament_Id(tournament.getTournament_Id());
+            _tournament.setFinalStandings(tournament.getFinalStandings());
+            _tournament.setEndDate(tournament.getEndDate());
+            _tournament.setLocation(tournament.getLocation());
+            _tournament.setEntryFee(tournament.getEntryFee());
+            _tournament.setParticipant(tournament.getParticipant());
+            _tournament.setPrize(tournament.getPrize());
+            _tournament.setStartDate(tournament.getStartDate());
+
+            return new ResponseEntity<>(tournamentsRepository.save(_tournament), HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
+
+    @DeleteMapping
+    public ResponseEntity<HttpStatus> deleteTournament(@PathVariable("id") long id) {
+        try {
+            tournamentsRepository.deleteById(id);
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        } catch (Exception e){
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 }
