@@ -17,8 +17,7 @@ public class Members {
     private String currentTournament;
     private String previousTournament;
 
-    public Members(long id, Person person, LocalDate membershipStart, String membershipType, String currentTournament, String previousTournament) {
-        this.id = id;
+    public Members(Person person, LocalDate membershipStart, String membershipType, String currentTournament, String previousTournament) {
         this.person = person;
         this.membershipStart = membershipStart;
         this.membershipType = membershipType;
