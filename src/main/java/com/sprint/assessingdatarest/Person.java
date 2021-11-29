@@ -24,9 +24,10 @@ public class Person {
         this.email = email;
         this.phone = phone;
     }
-    public Person(String firstName, String lastName, String address, String email, String phone){
 
+    public Person(String firstName, String lastName, String email, String phone) {
     }
+
     // Getters and setters //
     public long getId() {
         return id;

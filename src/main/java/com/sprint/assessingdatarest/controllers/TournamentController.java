@@ -5,10 +5,7 @@ import com.sprint.assessingdatarest.repository.TournamentsRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,6 +31,17 @@ public class TournamentController {
 
             return new ResponseEntity<>(tournament, HttpStatus.OK);
         }catch (Exception e) {
+            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @PostMapping("/Tournament")
+    public ResponseEntity<Tournament> postTournament (@RequestBody Tournament tournament) {
+        try {
+            Tournament _tournament = tournamentsRepository
+                    .save(new Tournament(tournament.getTournament_Id(), tournament.getStartDate(), tournament.getEndDate(), tournament.getLocation(), tournament.getEntryFee(), tournament.getPrize(), tournament.getParticipant(), tournament.getFinalStandings()));
+            return new ResponseEntity<>(_tournament, HttpStatus.CREATED);
+        } catch (Exception e) {
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }

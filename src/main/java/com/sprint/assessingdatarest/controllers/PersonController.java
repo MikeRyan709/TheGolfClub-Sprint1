@@ -18,7 +18,7 @@ public class PersonController {
     PersonRepository personRepository;
 
     @GetMapping("/person")
-    public ResponseEntity<List<Person>> getPerspn(@RequestParam(required = false) String firstName, String lastName) {
+    public ResponseEntity<List<Person>> getPerson(@RequestParam(required = false) String firstName, String lastName) {
         try {
             List<Person> people = new ArrayList<>();
 
@@ -35,6 +35,17 @@ public class PersonController {
 
             return new ResponseEntity<>(people, HttpStatus.OK);
         } catch (Exception e) {
+            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @PostMapping("/people")
+    public ResponseEntity<Person> postPerson(@RequestBody Person person) {
+        try {
+            Person _person = personRepository
+                    .save(new Person(person.getFirstName(), person.getLastName(), person.getEmail(), person.getPhone()));
+            return new ResponseEntity<>(_person, HttpStatus.CREATED);
+        }catch (Exception e) {
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }

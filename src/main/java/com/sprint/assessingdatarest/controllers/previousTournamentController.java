@@ -18,7 +18,7 @@ public class previousTournamentController {
     @Autowired
     previousTournamentRepository previousTournamentRepository;
 
-    @GetMapping("/previoustournament")
+    @GetMapping("/previousTournament")
     public ResponseEntity<List<previousTournament>> getPreviousTournament(@RequestParam(required = false) LocalDate previousTournamentDate) {
         try {
             List<previousTournament> previousTournament = new ArrayList<>();
@@ -33,6 +33,17 @@ public class previousTournamentController {
             }
 
             return new ResponseEntity<>(previousTournament, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @PostMapping("/previousTournament")
+    public ResponseEntity<previousTournament> postPreviousTournament(@RequestBody previousTournament previousTournament) {
+        try {
+            previousTournament _previousTournament = previousTournamentRepository
+                    .save(new previousTournament(previousTournament.getId(), previousTournament.getPreviousTournamentDate(), previousTournament.getTournament()));
+            return new ResponseEntity<>(_previousTournament, HttpStatus.CREATED);
         } catch (Exception e) {
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
         }

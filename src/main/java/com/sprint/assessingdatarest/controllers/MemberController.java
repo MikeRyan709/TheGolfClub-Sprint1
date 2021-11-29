@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -35,5 +34,16 @@ public class MemberController {
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-}
 
+    @PostMapping("/Members")
+    public ResponseEntity<Members> postMembers(@RequestBody Members member) {
+        try {
+            Members _member = memberRepository
+                    .save(new Members(member.getPerson(), member.getCurrentTournament(), member.getPreviousTournament(), member.getMembershipType(), member.getMembershipStart()));
+            return new ResponseEntity<>(_member, HttpStatus.CREATED);
+        } catch (Exception e) {
+            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+
+    }
+}

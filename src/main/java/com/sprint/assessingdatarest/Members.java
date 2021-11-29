@@ -19,10 +19,13 @@ public class Members {
 
     public Members(Person person, LocalDate membershipStart, String membershipType, String currentTournament, String previousTournament) {
         this.person = person;
-        this.membershipStart = membershipStart;
         this.membershipType = membershipType;
         this.currentTournament = currentTournament;
         this.previousTournament = previousTournament;
+        this.membershipStart = membershipStart;
+    }
+
+    public Members(Person person, String currentTournament, String previousTournament, String membershipType, LocalDate membershipStart) {
     }
 
     public long getId() {

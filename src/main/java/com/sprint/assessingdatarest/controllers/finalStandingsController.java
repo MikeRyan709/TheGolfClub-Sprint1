@@ -36,4 +36,14 @@ public class finalStandingsController {
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+    @PostMapping("/finalStandings")
+    public ResponseEntity<finalStandings> postFinalStandings(@RequestBody finalStandings finalStandings) {
+        try {
+            finalStandings _finalStandings = finalStandingsRepository
+                    .save(new finalStandings(finalStandings.getId(), finalStandings.getPerson(), finalStandings.getFinalScore(), finalStandings.getTournament()));
+            return new ResponseEntity<>(_finalStandings, HttpStatus.CREATED);
+        } catch (Exception e) {
+            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
 }
