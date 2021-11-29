@@ -1,4 +1,4 @@
-package com.sprint.TheGolfClubServer;
+package com.sprint;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
